@@ -1,0 +1,8 @@
+{
+  "name": "keycrate",
+  "version": "1.0.0",
+  "description": "License authentication SDK for Keycrate",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT"
+}

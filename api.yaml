@@ -1,0 +1,198 @@
+openapi: 3.0.3
+info:
+    title: License Authentication System API
+    description: API for license key authentication and registration
+    version: 1.0.0
+
+servers:
+    - url: https://your-edge-function-url.com
+      description: Production server
+    - url: http://127.0.0.1:8787
+      description: Local development server
+
+tags:
+    - name: Authentication
+      description: License verification and validation
+    - name: Registration
+      description: License credential registration
+
+paths:
+    /auth:
+        post:
+            tags:
+                - Authentication
+            summary: Authenticate with license
+            description: Verifies a license using either a license key or username/password combination
+            operationId: authenticateLicense
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                license:
+                                    type: string
+                                    description: License key (use this OR username/password)
+                                    example: "XXXX-XXXX-XXXX-XXXX"
+                                username:
+                                    type: string
+                                    description: Username (use with password instead of license)
+                                    example: "john_doe"
+                                password:
+                                    type: string
+                                    format: password
+                                    description: Password (use with username instead of license)
+                                    example: "secure_password_123"
+                                app_id:
+                                    type: string
+                                    format: uuid
+                                    description: Application ID (required)
+                                    example: "746fe0ab-7a70-4c33-8cef-8716b28d8bcf"
+                                hwid:
+                                    type: string
+                                    description: Hardware ID for device binding (optional)
+                                    example: "550e8400-e29b-41d4-a716-446655440000"
+                            required:
+                                - app_id
+                        examples:
+                            licenseKeyAuth:
+                                summary: License Key Authentication
+                                value:
+                                    license: "XXXX-XXXX-XXXX-XXXX"
+                                    app_id: "746fe0ab-7a70-4c33-8cef-8716b28d8bcf"
+                                    hwid: "550e8400-e29b-41d4-a716-446655440000"
+                            usernamePasswordAuth:
+                                summary: Username/Password Authentication
+                                value:
+                                    username: "john_doe"
+                                    password: "secure_password_123"
+                                    app_id: "746fe0ab-7a70-4c33-8cef-8716b28d8bcf"
+                                    hwid: "550e8400-e29b-41d4-a716-446655440000"
+            responses:
+                "200":
+                    description: License verified successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/AuthSuccessResponse"
+                "400":
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                "403":
+                    description: Authentication failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                "500":
+                    description: Server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+
+    /register:
+        post:
+            tags:
+                - Registration
+            summary: Register license credentials
+            description: Registers username and password credentials for a license key
+            operationId: registerLicenseCredentials
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/RegisterRequest"
+            responses:
+                "200":
+                    description: Credentials registered successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/RegisterSuccessResponse"
+                "400":
+                    description: Bad request or validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                "500":
+                    description: Server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+    schemas:
+        AuthSuccessResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    example: true
+                message:
+                    type: string
+                    example: "License verified for a USED AND LOCKED key"
+
+        RegisterRequest:
+            type: object
+            required:
+                - license_key
+                - username
+                - password
+                - app_id
+            properties:
+                license_key:
+                    type: string
+                    example: "XXXX-XXXX-XXXX-XXXX"
+                username:
+                    type: string
+                    minLength: 3
+                    maxLength: 50
+                    example: "john_doe"
+                password:
+                    type: string
+                    format: password
+                    minLength: 8
+                    example: "secure_password_123"
+                app_id:
+                    type: string
+                    format: uuid
+                    example: "746fe0ab-7a70-4c33-8cef-8716b28d8bcf"
+
+        RegisterSuccessResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    example: true
+                data:
+                    type: object
+                    properties:
+                        license_key:
+                            type: string
+                        username:
+                            type: string
+                        updated_at:
+                            type: string
+                            format: date-time
+
+        ErrorResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    example: false
+                message:
+                    type: string
+                    example: "License verification failed"
+                error:
+                    type: string
+                debug_error:
+                    type: string
