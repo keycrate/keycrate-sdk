@@ -5,7 +5,7 @@ License authentication SDK for Go projects.
 ## Installation
 
 ```bash
-go get github.com/yourusername/keycrate-sdk/go
+go get github.com/keycrate/keycrate-sdk/sdks/go
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"github.com/keycrate/keycrate-sdk/go"
+	"github.com/keycrate/keycrate-sdk/sdks/go"
 )
 
 func main() {

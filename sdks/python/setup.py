@@ -12,5 +12,5 @@ setup(
     python_requires=">=3.8",
     description="Simple Keycrate license authentication SDK",
     author="keycrate",
-    url="https://github.com/keycrate/sdk/keycrate-sdk",
+    url="https://github.com/keycrate/keycrate-sdk/sdks/python",
 )
