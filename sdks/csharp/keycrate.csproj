@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <PackageId>Keycrate</PackageId>
+    <Version>1.0.3</Version>
+    <Title>Keycrate SDK</Title>
+    <Description>License authentication SDK for Keycrate</Description>
+    <Authors>Your Name</Authors>
+    <License>MIT</License>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>license;authentication;keycrate</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- No external dependencies needed for .NET 6+ -->
+  </ItemGroup>
+
+</Project>

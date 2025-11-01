@@ -1,0 +1,20 @@
+[package]
+name = "keycrate"
+version = "1.0.0"
+edition = "2021"
+description = "License authentication SDK for Keycrate"
+license = "MIT"
+keywords = ["license", "authentication", "keycrate"]
+
+[dependencies]
+reqwest = { version = "0.11", features = ["json"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1", features = ["full"], optional = true }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full"] }
+
+[lib]
+name = "keycrate"
+path = "src/lib.rs"
